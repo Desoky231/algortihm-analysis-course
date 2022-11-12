@@ -1,0 +1,102 @@
+#include bitsstdc++.h
+#include iostream
+#include chrono
+using namespace std;
+using namespace stdchrono;
+long SIZE = 4000000;
+
+void readData(int grades[]) {
+
+    long i = 0;
+    string inFileName = 4m.txt;
+    ifstream inFile;
+    inFile.open(inFileName.c_str());
+
+    if (inFile.is_open())
+    {
+        for (i = 0; i  SIZE; i++)
+        {
+            inFile  grades[i];
+        }
+
+        inFile.close();  CLose input file
+    }
+    else { Error message
+        cerr  Can't find input file   inFileName  endl;
+    }
+}
+void displayArray(int arr[] , long size);
+
+
+
+long getMax(int arr[] ,long size1){
+    long max1 = arr[0];
+    for(auto i=0 ; i size1 ;i++){
+        if(arr[i]  max1){
+            max1 = arr[i];
+        }
+    }
+
+    return max1;
+}
+
+
+
+void count_radix(int arr[] , long size1  , auto div){
+    int array2[10] = {0};
+
+    int array3= (int) malloc(size1sizeof(array3));
+
+    for(auto i = 0 ; i  size1; i++ ){
+        auto index2 = (arr[i]  div) %10;
+        array2[index2]++;
+    }
+    for(auto i =1 ; i 10 ; i++){
+        array2[i] += array2[i-1];
+    }
+
+    for(auto i =size1- 1; i=0 ; i--){
+        auto value = (arr[i]  div) %10 ;
+        auto index3 = array2[value] -1 ;
+        array3[index3] = arr[i];
+        array2[value]--;
+    }
+
+    for(auto i = 0 ; i  size1 ; i ++){
+        arr[i] = array3[i];
+    }
+
+}
+
+void radix_sort(int arr[] , long size1){
+
+    long m = getMax(arr  , size1);
+    for(long d =1 ; md 0 ; d =10){
+        count_radix(arr , size1 , d);
+    }
+}
+
+void displayArray(int arr[] , long size){
+    for(long i=0 ; i  size ; i++){
+        coutarr[i]  ;
+    }coutendl;
+}
+
+
+int main()
+{
+    int grades = (int) malloc(SIZEsizeof(grades));
+    readData(grades);
+    auto start = high_resolution_clocknow();
+	radix_sort(grades , SIZE);
+	auto stop = high_resolution_clocknow();
+	auto duration = duration_castmicroseconds(stop - start);
+
+    cout  Time taken by function 
+          duration.count()   microseconds  endl;
+
+
+	return 0;
+}
+
+ This is code is contributed by rathbhupendra

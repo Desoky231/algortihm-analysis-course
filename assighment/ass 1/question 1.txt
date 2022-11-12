@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+
+
+void insertionrec(int arr[] , int n){
+
+    if(n == 1){
+        return;
+    }
+    insertionrec(arr , n-1);
+    int value = arr[n-1];
+    int pos = n-2;
+    while(pos >= 0 && arr[pos] > value){
+        arr[pos+1] = arr[pos];
+        pos--;
+
+    }
+    arr[pos+1] = value;
+}
+int main ()
+{
+
+    int arr[] = {5,3,6,2,1};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    insertionrec(arr , size);
+    for(int i =0 ; i < size ; i++){
+        cout<<arr[i]<<" ";
+    }
+
+// O(n^2)
+
+
+  return 0;
+}

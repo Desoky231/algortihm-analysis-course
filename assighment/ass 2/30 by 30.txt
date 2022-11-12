@@ -1,0 +1,58 @@
+import numpy as np
+import math
+
+
+def brute_force(A, B):
+    n, m, p = A.shape[0], A.shape[1], B.shape[1]
+    C = np.array([[0] * p for i in range(n)])
+    for i in range(n):
+        for j in range(p):
+            for k in range(m):
+                C[i][j] += A[i][k] * B[k][j]
+    return C
+
+
+def split(matrix):
+    n = len(matrix)
+    return matrix[:n // 2, :n // 2], matrix[:n // 2, n // 2:], matrix[n // 2:, :n // 2], matrix[n // 2:, n // 2:]
+
+
+def strassen(A, B):
+    matrix = A
+    matrix2 = B
+    while ((math.log(len(A), 2)) != int(math.log(len(A), 2))):
+        A = np.append(A, np.array([[0 for i in range(len(A))]]), axis=0)
+        A = np.append(A, np.array([[0] for i in range(len(A))]), axis=1)
+        B = np.append(B, np.array([[0 for i in range(len(B))]]), axis=0)
+        B = np.append(B, np.array([[0] for i in range(len(B))]), axis=1)
+
+    if len(A) <= 2:
+        return brute_force(A, B)
+    a, b, c, d = split(A)
+    e, f, g, h = split(B)
+    p1 = strassen(a + d, e + h)
+    p2 = strassen(d, g - e)
+    p3 = strassen(a + b, h)
+    p4 = strassen(b - d, g + h)
+    p5 = strassen(a, f - h)
+    p6 = strassen(c + d, e)
+    p7 = strassen(a - c, e + f)
+    C11 = p1 + p2 - p3 + p4
+    C12 = p5 + p3
+    C21 = p6 + p2
+    C22 = p5 + p1 - p6 - p7
+    C = np.vstack((np.hstack((C11, C12)), np.hstack((C21, C22))))
+    C = C[:len(matrix), :len(matrix)]
+    return C
+
+
+matrix = np.array([[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]])
+
+for i in range(29):
+    matrix = np.append( matrix ,[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,]] , axis = 0)
+
+matrix2 = matrix
+c = strassen(matrix , matrix2)
+print(len(c) ,len(c[0]))
+
+print(c)
