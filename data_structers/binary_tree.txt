@@ -1,0 +1,140 @@
+#include <bits/stdc++.h>
+#include <iostream>
+
+using namespace std;
+class binary_tree
+{
+
+public:
+    int value =0;
+    binary_tree *left = nullptr;
+    binary_tree *right = nullptr;
+    binary_tree *root  = nullptr;
+
+    void insert_node(int value){
+            root = _insert_node(value , root);
+    }
+    int number_nodes(){
+        return count_nodes(root);
+    }
+    binary_tree* search_node(int value){
+        return _search_node( value , root);
+    }
+    void in_order(){
+         _in_order(root);
+    }
+
+    void delete_item(int value){
+
+        _delete_item(value , root);
+    }
+
+
+
+private :
+    binary_tree* _insert_node(int value , binary_tree* root){
+            binary_tree* newNode = new binary_tree;
+            newNode->value = value;
+
+            if(!root){
+                return newNode;
+            }
+            if(value > root->value){
+                root->right = _insert_node(value , root->right);
+            }
+            if(value <root->value){
+                root->left = _insert_node(value , root->left);
+            }
+            return root;
+    }
+    int count_nodes(binary_tree *root){
+        if(root == nullptr){
+            return 0;
+        }
+        else{
+            return count_nodes(root->left) + count_nodes(root->right)+1;
+        }
+    }
+    binary_tree* _search_node(int value , binary_tree* root){
+            if(!root){
+                return nullptr;
+            }
+            if(value == root->value){
+                return root;
+            }
+            else if(value > root->value){
+                _search_node(value , root->right);
+            }
+            else if(value < root->value){
+                _search_node(value , root->left);
+            }
+    }
+    void _in_order(binary_tree *root){
+        if(root){
+        _in_order(root->left);
+        cout<<root->value << " ";
+        _in_order(root->right);
+        }
+    }
+
+    void _delete_item(int value , binary_tree*& root){
+        if(value > root->value){
+            _delete_item(value , root->right);
+        }
+        else if(value < root->value){
+            _delete_item(value , root->left);
+        }else{
+            delete_node(root);
+        }
+    }
+    void delete_node(binary_tree *& tree){
+        binary_tree *temp = root;
+
+        if(root->left == nullptr){
+            tree = tree->right;
+            delete(temp);
+        }
+        else if(root->right == nullptr){
+            tree = tree->left;
+            delete(temp);
+        }
+        else{
+            int data;
+            temp = get_precedance(root->left , data);
+            root->value = data;
+            delete(temp , &data);
+        }
+    }
+
+    binary_tree* get_precedance(binary_tree* root, int& data){
+        while(root->right != nullptr){
+            root = root->right;
+
+        }
+        data = root->value;
+
+        return root;
+    }
+
+
+
+
+
+
+
+};
+int main()
+{
+    binary_tree tree1;
+    tree1.insert_node(8);
+    for(int i = 0 ; i< 4 ; i++){
+        tree1.insert_node(i);
+    }
+    tree1.insert_node(-1);
+    tree1.delete_item(-1);
+    tree1.in_order();
+
+
+	return 0;
+}
+
